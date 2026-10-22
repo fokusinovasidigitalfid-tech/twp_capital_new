@@ -32,6 +32,7 @@ class WsbangunController extends Controller
                 ->update($data);
             $feedback = "Data has been updated successfully";
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
          
             $feedback = "Insert failed: " . $ex->getMessage();
         }
@@ -60,6 +61,7 @@ class WsbangunController extends Controller
             }
             $feedback = "Data has been updated successfully";
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
          
             $feedback = "Update failed: " . $ex->getMessage();
         }
@@ -242,6 +244,7 @@ class WsbangunController extends Controller
             }
 
         } catch (\Illuminate\Database\QueryException $ex) {
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
 
             $feedback = "Insert failed: " . $ex->getMessage();
         }
@@ -314,6 +317,7 @@ class WsbangunController extends Controller
                 $feedback = 'Bad request';
             }
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
             $feedback = "Update failed: " . $ex->getMessage();
         }
         echo $feedback;
@@ -359,6 +363,7 @@ class WsbangunController extends Controller
                 $feedback='Tenant no : '. $tenant_no . ' deleted!';
             }
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
             $feedback = "Delete failed: " . $ex->getMessage();
         }
         echo $feedback;

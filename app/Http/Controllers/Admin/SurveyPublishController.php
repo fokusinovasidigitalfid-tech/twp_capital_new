@@ -207,6 +207,7 @@ class SurveyPublishController extends Controller
             }//end else update
 
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
             $msg = "Save failed: " . $ex->getMessage();
             $st  = 'Failed';
         }
@@ -247,6 +248,7 @@ class SurveyPublishController extends Controller
             $msg = "Data has been saved successfully";
             $st  = 'OK';
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
             $msg = "Publish failed: " . $ex->getMessage();
             $st  = 'Fail';
         }
@@ -278,6 +280,7 @@ class SurveyPublishController extends Controller
             $msg = "Data has been deleted successfully";
             $st  = 'OK';
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
             $msg = "Delete failed: " . $ex->getMessage();
             $st  = 'Fail';
         }

@@ -1,1 +1,0 @@
-<img src="https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100&ssl=1"><?php /**PATH D:\xampp\htdocs\twp_capital_new\resources\views\tenant/overtime/viewlayout.blade.php ENDPATH**/ ?>

@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Support\ActivityLog;
 use Illuminate\Database\Events\ConnectionEstablished;
+use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
@@ -39,6 +42,11 @@ class AppServiceProvider extends ServiceProvider
             if ($event->connection->getDriverName() === 'sqlsrv') {
                 $event->connection->unprepared('SET DATEFORMAT ymd');
             }
+        });
+
+        // query yang mengubah data (insert/update/delete/exec) ikut dicatat di log aktivitas request
+        DB::listen(function (QueryExecuted $query) {
+            ActivityLog::query($query->sql, $query->bindings, $query->time, $query->connectionName);
         });
     }
 }

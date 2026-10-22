@@ -229,7 +229,8 @@ class HistoryController extends Controller
                         $pdf = Pdf::loadView('history/expticket', $content);
                         return $pdf->setPaper("a4","landscape")->stream($nf.'.pdf');
                     } catch (\Exception $e) {
-                        dd($e->getMessage(), $e->getTraceAsString());
+                        report($e); // detail error -> storage/logs/laravel-{tanggal}.log
+                        throw $e; // dulu dd(): menampilkan trace ke user & tidak tercatat
                     }
                     break;
                 case 'log':
@@ -317,7 +318,8 @@ class HistoryController extends Controller
                         $pdf = Pdf::loadView('history/expOT', $content);
                         return $pdf->setPaper("a4","landscape")->stream($nf.'.pdf');
                     } catch (\Exception $e) {
-                        dd($e->getMessage(), $e->getTraceAsString());
+                        report($e); // detail error -> storage/logs/laravel-{tanggal}.log
+                        throw $e; // dulu dd(): menampilkan trace ke user & tidak tercatat
                     }
                     return $pdf->stream($nf.'.pdf');
                     break;

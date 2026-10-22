@@ -65,7 +65,6 @@ Route::group(['middleware' => ['tenant-auth', 'revalidate']], function () {
 	Route::post('/ticket/save', [Ticket::class, 'save']);
 	Route::get('/ticketharga/getHargaItem', [Ticket::class, 'getHargaItem']);
 	Route::get('/ticketharga/getHargaJasa', [Ticket::class, 'getHargaJasa']);
-	Route::get('/ticketharga/downloadHargaItemPdf',[Ticket::class, 'downloadHargaItemPdf']);
 	
 	//BillingOutstandingController
 	Route::get('/oustanding', [BillingOutstanding::class, 'index']);

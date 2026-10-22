@@ -19,6 +19,21 @@ return [
 
     'default' => env('LOG_CHANNEL', 'daily'),
 
+    // Log aktivitas semua request/transaksi (App\Support\ActivityLog), tetap aktif walau APP_DEBUG=false:
+    //   storage/logs/activity/{YYYY-MM-DD}/{admin|tenant|portal|api}-{Controller}.log  + _errors.log (yang gagal)
+    'activity' => [
+        'enabled' => env('ACTIVITY_LOG', true),
+        'path' => storage_path('logs/activity'),
+        'days' => env('ACTIVITY_LOG_DAYS', 90),     // folder tanggal lebih tua dari ini dihapus otomatis
+        'max_queries' => 50,                         // batas query transaksi yang ditulis per request
+    ],
+
+    // Peringatan PHP/library deprecated (berguna sebelum naik versi PHP), mis. LOG_DEPRECATIONS_CHANNEL=single
+    'deprecations' => [
+        'channel' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
+        'trace' => env('LOG_DEPRECATIONS_TRACE', false),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Log Channels
@@ -51,7 +66,7 @@ return [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
             'level' => 'debug',
-            'days' => 14,
+            'days' => env('LOG_DAILY_DAYS', 30),
         ],
 
         'slack' => [

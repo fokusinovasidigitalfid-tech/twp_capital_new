@@ -162,6 +162,7 @@ class SysSpecController extends Controller
                         $msg = "Successfully change image!";
                         $psn = "OK";
                     } catch(\Illuminate\Database\QueryException $ex){ 
+                        report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
                         $msg = "Save failed: " . $ex->getMessage();
                         $psn  = 'Failed';
                     }
