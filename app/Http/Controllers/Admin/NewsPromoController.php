@@ -175,6 +175,7 @@ class NewsPromoController extends Controller
                 
             }
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
             $msg = "Save failed: " . $ex->getMessage();
             $st  = 'Failed';
         }
@@ -196,6 +197,7 @@ class NewsPromoController extends Controller
             $msg = "Data has been deleted successfully";
             $st  = 'OK';
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
             $msg = "Delete failed: " . $ex->getMessage();
             $st  = 'Fail';
         }

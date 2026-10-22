@@ -58,6 +58,7 @@ class OvertimeController extends Controller
             $msg = "Data has been approved successfully";
             $st  = 'OK';
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
             $msg = "Delete failed: " . $ex->getMessage();
             $st  = 'Fail';
         }
@@ -79,6 +80,7 @@ class OvertimeController extends Controller
             $msg = "Data has been canceled successfully";
             $st  = 'OK';
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
             $msg = "Delete failed: " . $ex->getMessage();
             $st  = 'Fail';
         }
@@ -420,6 +422,7 @@ class OvertimeController extends Controller
             $dtexec = array('bill_debtor'=>$bill_debtor,'postdate'=> $postdate,'bill_date'=>$postdate_new,'startperiod'=>$startperiod,'endperiod'=>$endperiod,'rowid_hdfji'=>$rowid_hd,'entity'=>$entity,'project'=>$project,'audit_user'=>'TWP','id_ot'=>$id_ot);
             
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
             $msg = "Save failed: " . $ex->getMessage();
             $st  = 'Failed';
         }
@@ -648,6 +651,7 @@ class OvertimeController extends Controller
                 $msg="Data has been posted succesfully.";
                 $st = 'OK';
             } catch(\Illuminate\Database\QueryException $ex){ 
+                report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
                 $msg = "Posting data failed: " . $ex->getMessage();
                 $st  = 'Failed';
             }
@@ -703,6 +707,7 @@ class OvertimeController extends Controller
   
           
         }catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
             $msg = "Cancel posting data failed: " . $ex->getMessage();
             $st  = 'Failed';
         }

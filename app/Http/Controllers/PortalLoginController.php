@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Admin\LoginController as AdminLogin;
 use App\Http\Controllers\Tenant\LoginController as TenantLogin;
+use App\Support\ActivityLog;
 use App\Support\Portal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -63,6 +64,10 @@ class PortalLoginController extends Controller
         }
 
         if (!$adminOk && count($tenantIds) === 0) {
+            // alasan sebenarnya hanya di log (pengguna tetap melihat pesan umum)
+            ActivityLog::note('login gagal: ' . (!$admin && count($tenants) === 0
+                ? 'email tidak terdaftar sebagai admin / tenant aktif'
+                : 'password salah'), array('email' => $email));
             return redirect('/')
                 ->withInput($request->only('email', 'bsn'))
                 ->with('alert', 'Email or password is incorrect!');
@@ -125,16 +130,20 @@ class PortalLoginController extends Controller
     private function enterAdmin($adminId, $email)
     {
         if (!app(AdminLogin::class)->createSession($adminId, $email)) {
+            ActivityLog::note('login gagal: data administrator tidak ditemukan', array('admin_id' => $adminId));
             return redirect('/')->with('alert', 'User is not valid!');
         }
+        ActivityLog::note('login berhasil sebagai admin', array('admin_id' => $adminId, 'email' => $email));
         return redirect()->away(Portal::url('admin/dash'));
     }
 
     private function enterTenant($tenantId)
     {
         if (!app(TenantLogin::class)->createSession($tenantId)) {
+            ActivityLog::note('login gagal: data tenant tidak ditemukan', array('tenant_id' => $tenantId));
             return redirect('/')->with('alert', 'User not found');
         }
+        ActivityLog::note('login berhasil sebagai tenant', array('tenant_id' => $tenantId, 'company' => Session::get('TCompany')));
         return redirect()->away(Portal::url('tenant/dash'));
     }
 }

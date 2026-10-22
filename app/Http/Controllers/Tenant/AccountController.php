@@ -131,6 +131,7 @@ class AccountController extends Controller
                 $st  = 'OK';
              
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
             $msg = "Save failed: " . $ex->getMessage();
             $st  = 'Failed';
         }
@@ -158,6 +159,7 @@ class AccountController extends Controller
                 $st  = 'OK';
              
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
             $msg = "Save failed: " . $ex->getMessage();
             $st  = 'Failed';
         }

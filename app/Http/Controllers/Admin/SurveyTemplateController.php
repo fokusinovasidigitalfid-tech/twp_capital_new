@@ -114,6 +114,7 @@ class SurveyTemplateController extends Controller
                 
             }
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
             $msg = "Save failed: " . $ex->getMessage();
             $st  = 'Failed';
         }
@@ -141,6 +142,7 @@ class SurveyTemplateController extends Controller
             $msg = "Data has been deleted successfully";
             $st  = 'OK';
         } catch(\Illuminate\Database\QueryException $ex){ 
+            report($ex); // detail error -> storage/logs/laravel-{tanggal}.log
             $msg = "Delete failed: " . $ex->getMessage();
             $st  = 'Fail';
         }
