@@ -1,0 +1,6 @@
+# Folder ini hanya berisi file statis & upload (gambar). Skrip apa pun tidak boleh dijalankan,
+# walaupun berhasil ter-upload. (Tanpa RewriteEngine supaya aturan rewrite root tetap berlaku.)
+Options -Indexes -ExecCGI
+<FilesMatch "\.(php\d?|phtml|phar|pht|pl|py|cgi|sh|asp|aspx|jsp|htaccess)$">
+    Require all denied
+</FilesMatch>

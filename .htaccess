@@ -1,0 +1,53 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Force HTTPS (kecuali diakses dari localhost)
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Kode aplikasi & file rahasia tidak boleh dibuka langsung dari browser
+    # (folder kode, semua file/folder berawalan titik seperti .env/.git, dan file project di root)
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests|vendor)(/.*)?$ index.php [L]
+    RewriteRule (^|/)\. index.php [L]
+    RewriteRule ^(composer\.(json|lock)|artisan|package(-lock)?\.json|phpunit\.xml|webpack\.mix\.js|README\.md)$ index.php [L]
+
+    # File gambar/aset dengan URL project lama (mis. foto yang URL-nya tersimpan di database)
+    # tetap terbuka dari folder baru: webadmin/... -> admin/..., webtenant/... -> tenant/...
+    RewriteRule ^webadmin/((assets|images|public)/.*)$ admin/$1 [L]
+    RewriteRule ^webtenant/((assets|img|public|storage)/.*)$ tenant/$1 [L]
+    # URL project lama lainnya (/webadmin/..., /webtenant/...) ke Laravel -> halaman login "/"
+    RewriteRule ^(webadmin|webtenant)(/.*)?$ index.php [L]
+
+    # /admin dan /tenant adalah folder aset, tapi halamannya milik Laravel
+    RewriteRule ^(admin|tenant)/?$ index.php [L]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # File statis (admin/assets, admin/images, admin/public, tenant/img, ...) dilayani langsung oleh Apache.
+    # Sisanya (/, /admin/..., /tenant/...) ke front controller Laravel.
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Header keamanan dasar
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always unset X-Powered-By
+    Header unset X-Powered-By
+</IfModule>
+ServerSignature Off

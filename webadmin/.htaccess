@@ -1,0 +1,19 @@
+# Folder ini hanya cadangan aplikasi lama (webadmin). Aplikasi sekarang satu: login di "/",
+# halaman di /admin/... Tidak ada file di folder ini yang boleh dibuka langsung
+# (.env, log, kode). File asli: .htaccess.orig
+Options -Indexes
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # API untuk sistem luar (URL lama /webadmin/api/...) -> aplikasi baru (routes/api.php)
+    RewriteCond %{REQUEST_URI} ^(.*)/webadmin/api/
+    RewriteRule ^ %1/index.php [L]
+    # gambar/aset dengan URL lama (mis. tersimpan di database) -> lokasi baru
+    RewriteCond %{REQUEST_URI} ^(.*)/webadmin/((assets|images|public)/.*)$
+    RewriteRule ^ %1/admin/%2 [R=301,L]
+    # selain itu -> halaman login
+    RewriteCond %{REQUEST_URI} ^(.*)/webadmin(/.*)?$
+    RewriteRule ^ %1/ [R=302,L]
+</IfModule>
+<IfModule !mod_rewrite.c>
+    Require all denied
+</IfModule>

@@ -1,0 +1,25 @@
+VBETest - VESA VBE stress test program (Version 5.0)
+          Copyright (C) 1994 SciTech Software
+
+VBE Version:  1.2
+OEMString:    S3 Incorporated. Trio64
+Capabilities: 00000000b (0000h)
+Total Memory: 1024 Kb
+
+Available Modes:
+
+0100h 0101h 0102h 0103h 0104h 0105h 0106h 0107h 0109h 010Ah 
+0110h 0111h 0112h 0113h 0114h 0115h 0116h 0117h 0118h 0119h 
+011Ah 0120h 
+
+Checking function 00h ... Passed.
+Checking function 01h ... Passed.
+Checking function 02h ... Passed.
+Checking function 04h ... Passed.
+Checking function 05h ... Passed.
+Checking mode 100h ... Passed.
+Checking mode 101h ... Passed.
+Checking mode 102h ... Passed.
+Checking mode 103h ... Passed.
+Checking mode 104h ... Passed.
+Checking mode 105h ... 

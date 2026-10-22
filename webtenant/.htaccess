@@ -1,0 +1,16 @@
+# Folder ini hanya cadangan aplikasi lama (webtenant). Aplikasi sekarang satu: login di "/",
+# halaman di /tenant/... Tidak ada file di folder ini yang boleh dibuka langsung
+# (.env, log, kode). File asli: .htaccess.orig
+Options -Indexes
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # gambar/aset dengan URL lama (mis. tersimpan di database) -> lokasi baru
+    RewriteCond %{REQUEST_URI} ^(.*)/webtenant/((assets|img|public|storage)/.*)$
+    RewriteRule ^ %1/tenant/%2 [R=301,L]
+    # selain itu -> halaman login
+    RewriteCond %{REQUEST_URI} ^(.*)/webtenant(/.*)?$
+    RewriteRule ^ %1/ [R=302,L]
+</IfModule>
+<IfModule !mod_rewrite.c>
+    Require all denied
+</IfModule>
